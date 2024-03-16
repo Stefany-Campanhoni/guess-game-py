@@ -1,5 +1,6 @@
 import random
 from os import system, name
+import msvcrt
 
 
 GOODBYE_MESSAGE = """
@@ -32,6 +33,17 @@ CONGRATULATIONS_MESSAGE = """
 MIN_NUMBER = 0
 MAX_NUMBER = 100
 
+# Colors class for text colors
+class Colors:
+    RESET = '\033[0m'  # Reset to default color
+    RED = '\033[91m'   # Red color
+    GREEN = '\033[92m'  # Green color
+    YELLOW = '\033[93m'  # Yellow color
+    BLUE = '\033[94m'   # Blue color
+    MAGENTA = '\033[95m'  # Magenta color
+    CYAN = '\033[96m'   # Cyan color
+    WHITE = '\033[97m'  # White color
+
 
 def clear_screen():
     return system('cls' if name == 'nt' else 'clear')
@@ -50,29 +62,41 @@ def input_number():
         if num <= MAX_NUMBER and num >= MIN_NUMBER:
             check_number(num, target)
 
-        print("\n!!! Your number MUST be between 0 and 100 !!!\n")
+        print(Colors.YELLOW + "\n!!! Your number MUST be between 0 and 100 !!!\n" + Colors.RESET)
 
     except ValueError:
-        print("\n!!! You MUST type an INTEGER number !!!\n")
+        print(Colors.RED + "\n!!! You MUST type an INTEGER number !!!\n" + Colors.RESET)
 
     except KeyboardInterrupt:
         clear_screen()
+
         print(GOODBYE_MESSAGE)
+        print("Press any key to exit...")
+        msvcrt.getch()
+
         raise SystemExit
 
     input_number()
 
 
 def check_number(n, target):
+    print(Colors.CYAN)
     if n == target:
         clear_screen()
-        print(CONGRATULATIONS_MESSAGE)
-        raise SystemExit
-    elif n > target:
-        print("\nYour guess was too high. Try a smaller number.\n")
-    else:
-        print("\nYour guess was too low. Try a larger number.\n")
 
+        print(Colors.GREEN + CONGRATULATIONS_MESSAGE + Colors.RESET)
+        print("Press any key to exit...")
+        msvcrt.getch()
+
+        raise SystemExit
+
+    elif n > target:
+        print("\nYour guess was too high. Try a smaller number.")
+
+    else:
+        print("\nYour guess was too low. Try a larger number.")
+
+    print(Colors.RESET)
     input_number()
 
 
